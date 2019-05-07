@@ -1,4 +1,5 @@
-import { LightningElement, wire } from 'lwc';
+/* eslint-disable no-alert */
+import { LightningElement, wire, api } from 'lwc';
 import { CurrentPageReference } from 'lightning/navigation';
 import { NavigationMixin } from 'lightning/navigation';
 
@@ -32,7 +33,18 @@ const fields = [
  */
 export default class ProductCard extends NavigationMixin(LightningElement) {
     /** Id of Product__c to display. */
+    @api
     recordId;
+  
+      get acceptedFormats() {
+          return ['.pdf', '.png'];
+      }
+  
+      handleUploadFinished(event) {
+          // Get the list of uploaded files
+          const uploadedFiles = event.detail.files;
+          alert("No. of files uploaded : " + uploadedFiles.length);
+      }
 
     @wire(CurrentPageReference) pageRef;
 

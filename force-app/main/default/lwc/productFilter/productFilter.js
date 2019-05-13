@@ -4,6 +4,7 @@ import { getPicklistValues } from 'lightning/uiObjectInfoApi';
 import CATEGORY_FIELD from '@salesforce/schema/Product__c.Category__c';
 import LEVEL_FIELD from '@salesforce/schema/Product__c.Level__c';
 import MATERIAL_FIELD from '@salesforce/schema/Product__c.Material__c';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 
 /** Pub-sub mechanism for sibling component communication. */
 import { fireEvent } from 'c/pubsub';
@@ -42,7 +43,13 @@ export default class ProductFilter extends LightningElement {
         fieldApiName: MATERIAL_FIELD
     })
     materials;
-
+    showToast() {
+        const event = new ShowToastEvent({
+            title: 'Get Help',
+            message: 'Salesforce documentation is available in the app. Click ? in the upper-right corner.',
+        });
+        this.dispatchEvent(event);
+    }
     handleSearchKeyChange(event) {
         this.filters.searchKey = event.target.value;
         this.delayedFireFilterChangeEvent();

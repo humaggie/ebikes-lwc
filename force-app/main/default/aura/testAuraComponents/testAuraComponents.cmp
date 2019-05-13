@@ -1,0 +1,391 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="comboBoxOptions" type="List" default="[
+    {'label': 'New', 'value': 'new'},
+    {'label': 'In Progress', 'value': 'inProgress'},
+    {'label': 'Finished', 'value': 'finished'},
+    ]"/>
+    <aura:attribute name="langoptions" type="List" default="[
+    { label: 'English', value: 'en' },
+    { label: 'German', value: 'de' },
+    { label: 'Spanish', value: 'es' },
+    { label: 'French', value: 'fr' },
+    { label: 'Italian', value: 'it' },
+    { label: 'Japanese', value: 'ja' }]"/>
+    <aura:attribute name="width" type="String" default="600px" description=" width of parent region"/>
+
+ <aura:attribute name="items" type="List" default="[
+                {
+                    type: 'avatar',
+                    href: '',
+                    label: 'Avatar Pill',
+                    src: '/docs/component-library/app/images/examples/avatar2.jpg',
+                    fallbackIconName: 'standard:user',
+                    variant: 'circle',
+                    alternativeText: 'User avatar',
+                },
+                {
+                    type: 'icon',
+                    href: '',
+                    label: 'Icon Pill',
+                    iconName: 'standard:account',
+                    alternativeText: 'Account',
+                },
+            ]"/>
+    <aura:attribute name="options" type="List" />
+    <aura:attribute name="type" type="String" default="News" description="The type of feed" access="GLOBAL"/>
+    <aura:attribute name="types" type="String[]"
+                    default="Bookmarks,Company,DirectMessages,Feeds,Files,Filter,Groups,Home,Moderation,Mute,News,PendingReview,Record,Streams,To,Topics,UserProfile"
+                    description="A list of feed types"/>
+    
+        <aura:attribute name="showStep4" type="Boolean" default="true"/>
+     <aura:attribute name="myVal" type="String" />
+    <aura:attribute name="val" type="Integer" default="50"/>
+        <aura:attribute name="radioOptions" type="List" default="[
+    {'label': 'SalesXXXXXXXXXXXXXXXXXX', 'value': 'option1'},
+    {'label': 'ForceXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', 'value': 'option2'}
+    ]"/>
+    <aura:attribute name="radioValue" type="String" default="option1"/>
+    <aura:attribute name="gridColumns" type="List" access="PRIVATE" />
+    <aura:attribute name="gridData" type="Object" access="PRIVATE" />
+    <aura:attribute name="gridExpandedRows" type="List" access="PRIVATE" />
+
+
+    <div>
+        <lightning:treeGrid
+            columns="{! v.gridColumns }"
+            data="{! v.gridData }"
+            expandedRows="{! v.gridExpandedRows }"
+            keyField="name"
+        />
+    </div>
+
+    <!--lightning:flexipageRegionInfo width="{!v.width}"/>-->
+       <lightning:radioGroup name="radioGroup"
+                          label="Radio Group"
+                          options="{! v.radioOptions }"
+                          value="{! v.radioValue }"
+                          type="radio"/>
+    
+    <lightning:slider label="Volume" value="{!v.val}"/>
+    <div></div>
+        <lightning:tabset>
+        <lightning:tab label="Item One xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+            One Content xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx!
+        </lightning:tab>
+        <lightning:tab label="Item Two xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" title="2nd tab extended title">
+            Two Content xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx!
+        </lightning:tab>
+        <lightning:tab label="Item Three xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+            Three Content xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx!
+        </lightning:tab>
+    </lightning:tabset>
+    <lightning:inputRichText value="{!v.myVal}" placeholder="Type something interesting"/>
+    <h1 class="slds-m-top_large slds-text-heading_medium">Output</h1>
+    <div aura:id="output" class="slds-box editor slds-text-longform">
+        <lightning:formattedRichText value="{!v.myVal}" />
+    </div>
+    
+    <lightning:progressIndicator currentStep="step-3" type="path" variant="base">
+        <lightning:progressStep label="Contacted" value="step-1"/>
+        <lightning:progressStep label="Open" value="step-2"/>
+        <lightning:progressStep label="Unqualified" value="step-3"/>
+        <aura:if isTrue="{! v.showStep4 }">
+            <lightning:progressStep label="Nurturing" value="step-4"/>
+        </aura:if>
+        <lightning:progressStep label="Closed" value="step-5"/>
+    </lightning:progressIndicator>
+    <lightning:button label="Hide/Show Step 4" onclick="{! c.toggleStep4 }"/>
+    <h1>My Feeds</h1>
+    <lightning:select aura:id="typeSelect" onchange="{!c.onChangeType}" label="Type" name="typeSelect">
+        <aura:iteration items="{!v.options}" var="item">
+            <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+        </aura:iteration>
+    </lightning:select>
+    <div aura:id="feedContainer" class="feed-container">
+        <forceChatter:feed />
+    </div>
+    
+   	<div>
+    <forceCommunity:appLauncher/>
+    </div>
+    
+    <div>
+    <lightning:avatar src="/bad/image/url.jpg" initials="Sa" fallbackIconName="standard:account" alternativeText="Salesforce" class="slds-m-right_small"/>
+    <lightning:avatar src="/bad/image/url.jpg" initials="BW" fallbackIconName="standard:avatar"  alternativeText="Bob Wilson" class="slds-m-right_small"/>
+    <lightning:avatar src="/bad/image/url.jpg" initials="WE" fallbackIconName="custom:custom92"  alternativeText="Wilson Enterprises" class="slds-m-right_small"/>
+    </div>
+    
+    <div> 
+    <lightning:badge label="Label"/>
+    </div>
+    
+    <div> <!-- bare -->
+    <lightning:buttonIcon iconName="utility:settings" variant="bare" onclick="{! c.handleClick }" alternativeText="Settings" />
+    <lightning:buttonIcon iconName="utility:settings" variant="bare" onclick="{! c.handleClick }" disabled="true" alternativeText="Settings (disabled)" />
+
+    <!-- with container -->
+    <lightning:buttonIcon iconName="utility:settings" variant="container" alternativeText="Settings" />
+    <lightning:buttonIcon iconName="utility:settings" variant="container" disabled="true" alternativeText="Settings (disabled)" />
+
+    <!-- with border / by default -->
+    <lightning:buttonIcon iconName="utility:settings"  alternativeText="Settings" />
+    <lightning:buttonIcon iconName="utility:settings"  disabled="true" alternativeText="Settings (disabled)" />
+
+    <!-- with border filled -->
+    <lightning:buttonIcon iconName="utility:settings"  variant="border-filled" alternativeText="Settings" />
+    <lightning:buttonIcon iconName="utility:settings"  variant="border-filled" disabled="true" alternativeText="Settings (disabled)" />
+
+    <!--Sizes -->
+    <lightning:buttonIcon iconName="utility:down"  size="xx-small" alternativeText="View More" />
+    <lightning:buttonIcon iconName="utility:down"  size="x-small" alternativeText="View More" />
+    <lightning:buttonIcon iconName="utility:down"  size="small" alternativeText="View More" />
+    <lightning:buttonIcon iconName="utility:down"  alternativeText="View More" />
+
+    <lightning:buttonIcon iconName="utility:down"  size="x-small"   onclick="{! c.handleClick }" variant="bare" alternativeText="View More" />
+    <lightning:buttonIcon iconName="utility:down"  size="small"     variant="bare" alternativeText="View More" />
+    <lightning:buttonIcon iconName="utility:down"  variant="bare"   alternativeText="View More" />
+    <lightning:buttonIcon iconName="utility:down"  size="large"     variant="bare" alternativeText="View More" />
+    
+    <!-- with icon styling -->
+    <lightning:buttonIcon iconName="utility:settings" variant="bare" alternativeText="Settings" iconClass="dark"/>
+	</div>
+    
+        <div class="my-custom-background">
+        <lightning:button label="Inverse"          variant="inverse" />
+        <lightning:button label="Inverse disabled" variant="inverse" disabled="true"/>
+        <!-- inverse with icons -->
+        <lightning:button label="Icon #1" iconName="utility:download" iconPosition="left"  variant="inverse" />
+        <lightning:button label="Icon #2" iconName="utility:download" iconPosition="right" variant="inverse" />
+        <lightning:button label="Icon #2" iconName="utility:download" iconPosition="right" variant="inverse" disabled="true" />
+    </div>
+    
+      <!-- Base variant: Makes a button look like a link -->
+    <lightning:button variant="base" label="Base" title="Base action" onclick="{! c.handleClick }"/>
+
+    <!-- Neutral variant (default) -->
+    <lightning:button label="Neutral" title="Neutral action" onclick="{! c.handleClick }"/>
+
+    <!-- Brand variant: Identifies the primary action in a group of buttons -->
+    <lightning:button variant="brand" label="Brand action" title="Brand action" onclick="{! c.handleClick }" />
+
+    <!-- Destructive variant: Identifies a potentially negative action -->
+    <lightning:button variant="destructive" label="Destructive" title="Destructive action" onclick="{! c.handleClick }"/>
+
+    <!-- Success variant: Identifies a successful action -->
+    <lightning:button variant="success" label="Success" title="Success" onclick="{! c.handleClick }"/>
+<lightning:button variant="base"        disabled="true">Disabled Base</lightning:button>
+    <lightning:button variant="neutral"     disabled="true">Disabled Neutral</lightning:button>
+    <lightning:button variant="brand"       disabled="true">Disabled Brand</lightning:button>
+    <lightning:button variant="destructive" disabled="true">Disabled Destructive</lightning:button>
+    
+     <lightning:combobox name="progress" label="Status" value="inProgress" placeholder="Select Progress" options="{! v.comboBoxOptions }" onchange="{! c.handleComboboxChange }"/>
+
+        <aura:attribute name="accept" type="List" default="['.jpg', '.jpeg']"/>
+    <aura:attribute name="multiple" type="Boolean" default="true"/>
+    <aura:attribute name="disabled" type="Boolean" default="false"/>
+<lightning:dynamicIcon type="eq" option="play" alternativeText="On a call"/>
+    <lightning:dynamicIcon type="ellie" alternativeText="Ellie intelligence"/>
+    <lightning:icon iconName="action:approval" alternativeText="Approved" />
+    <lightning:icon iconName="doctype:audio" alternativeText="Audio file" />
+    <lightning:icon iconName="standard:event" alternativeText="Event" />
+    <lightning:icon iconName="utility:connected_apps" alternativeText="Connected" />
+    <lightning:icon iconName="utility:warning" alternativeText="Warning!" variant="warning"/>
+    <lightning:icon iconName="utility:error" alternativeText="Error!" variant="error"/>
+    <lightning:icon iconName="utility:image" alternativeText="Utility image" />
+    <lightning:icon iconName="doctype:image" alternativeText="Doc image" />
+    <lightning:dynamicIcon type="trend" option="down" alternativeText="Trending down"/>
+        <div class="slds-m-around_medium">
+        <lightning:buttonIconStateful iconName="utility:like" selected="{! v.liked }" onclick="{! c.handleLikeButtonClick }" alternativeText="Like" />
+    </div>
+    <div class="slds-m-around_medium">
+        <lightning:buttonIconStateful iconName="utility:answer" selected="{! v.answered }" onclick="{! c.handleAnswerButtonClick }" alternativeText="Answer" size="small"/>
+    </div>
+    <!-- disabled -->
+    <div class="slds-m-around_medium">
+        <lightning:buttonIconStateful iconName="utility:like"  alternativeText="Disabled" disabled="true"/>
+    </div>
+     <div>
+        <lightning:verticalNavigation selectedItem="reports_recent">
+
+            <lightning:verticalNavigationSection label="Reports">
+                <lightning:verticalNavigationItemIcon
+                    label="Recent"
+                    name="reports_recent"
+                    iconName="utility:clock" />
+
+                <lightning:verticalNavigationItemIcon
+                    label="Created by Me"
+                    name="reports_usercreated"
+                    iconName="utility:user" />
+
+                <lightning:verticalNavigationItemIcon
+                    label="Private Reports"
+                    name="reports_private"
+                    iconName="utility:lock" />
+
+                <lightning:verticalNavigationItemIcon
+                    label="Public Reports"
+                    name="reports_public"
+                    iconName="utility:groups" />
+
+                <lightning:verticalNavigationItem
+                    label="All Reports"
+                    name="reports_all" />
+            </lightning:verticalNavigationSection>
+
+            <lightning:verticalNavigationSection label="Folders">
+                <lightning:verticalNavigationItemIcon
+                    label="Created by Me"
+                    name="folders_usercreated"
+                    iconName="utility:open_folder" />
+
+                <lightning:verticalNavigationItemIcon
+                    label="Shared with Me"
+                    name="folders_shared"
+                    iconName="utility:open_folder" />
+            </lightning:verticalNavigationSection>
+
+        </lightning:verticalNavigation>
+         
+         <p><lightning:inputLocation label="No default coordinates" /></p>
+    <p><lightning:inputLocation label="Default coordinates" latitude="-15.1234" longitude="99.5517" /></p>
+    <p><lightning:inputLocation label="Required" latitude="-15.1234" longitude="99.5517" required="true"/></p>
+    <p><lightning:inputLocation label="Disabled" latitude="-15.1234" longitude="99.5517" disabled="true"/></p>
+    <p><lightning:inputLocation label="Read-only" latitude="-15.1234" longitude="99.5517" readonly="true"/></p>
+    <p><lightning:inputLocation label="fieldLevelHelp presents" fieldLevelHelp="Field level text example"/></p>
+    
+ 	<lightning:pill label="With link" href="/path/to/some/where"/>
+    <lightning:pill label="With only remove handler" onremove="{! c.handlePillRemove }"/>
+    <lightning:pill label="With both remove and click handlers" onremove="{! c.handlePillRemove }" onclick="{! c.handlePillClick }"/>
+    <lightning:pill label="With isolated remove handler" onremove="{! c.handlePillRemoveOnly }" onclick="{! c.handlePillClick }"/>
+ 
+             <lightning:helptext
+        content="The tooltip displays on the lower left of the icon or above the icon if space is available. It automatically adjusts its position according to the viewport."
+    />
+    </div>
+     <lightning:progressBar value="50" size="large" />
+        <lightning:progressIndicator currentStep="3" type="base" hasError="true" variant="base">
+        <lightning:progressStep label="Step 1" value="1"/>
+        <lightning:progressStep label="Step 2" value="2"/>
+        <lightning:progressStep label="Step 3" value="3"/>
+        <lightning:progressStep label="Step 4" value="4"/>
+    </lightning:progressIndicator>
+      <aura:attribute name="progress" type="Integer" default="0"/>
+    <aura:attribute name="isProgressing" type="Boolean" default="false"/>
+
+    <lightning:progressBar value="{! v.progress }" />
+    <lightning:button label="{! v.isProgressing ? 'Stop' : 'Start' }" onclick="{! c.toggleProgress }" class="slds-m-top_medium"/>
+   
+    <div class="slds-brand-band slds-brand-band_medium"></div>
+    
+    <lightning:fileUpload  name="fileUploader"
+                           label= "Demo Upload"
+                           multiple="{!v.multiple}"
+                           accept="{!v.accept}"
+                           disabled="{!v.disabled}"
+                           recordId="abcd"
+                           onuploadfinished="{! c.handleUploadFinished }"/>
+    
+    <lightning:breadcrumbs>
+            <lightning:breadcrumb label="Parent Entity ----------------------" href="path/to/place/1"/>
+            <lightning:breadcrumb label="Parent Record Name ---------------------" href="path/to/place/2"/>
+    </lightning:breadcrumbs>
+
+    <lightning:card footer="Card Footer" title="Hello World">
+        <aura:set attribute="actions">
+            <lightning:button label="New"/>
+        </aura:set>
+        <p class="slds-p-horizontal_small">
+            Card Body (custom component)
+        </p>
+    </lightning:card>
+
+    <lightning:carousel disableAutoRefresh="false" disableAutoScroll="false">
+        <lightning:carouselImage
+            src = "/docs/component-library/app/images/examples/carousel-01.png"
+            header = "First Card"
+            description = "First card description."
+            alternativeText = "First card accessible description."
+            href = "https://www.salesforce.com">
+        </lightning:carouselImage>
+        <lightning:carouselImage
+            src = "/docs/component-library/app/images/examples/carousel-02.png"
+            header = "Second Card"
+            description = "Second card description."
+            alternativeText = "Second card accessible description."
+            href = "https://www.salesforce.com">
+        </lightning:carouselImage>
+        <lightning:carouselImage
+            src = "/docs/component-library/app/images/examples/carousel-03.png"
+            header = "Third Card"
+            description = "Third card description."
+            alternativeText = "Third card accessible description."
+            href = "https://www.salesforce.com">
+        </lightning:carouselImage>
+    </lightning:carousel>
+
+    <p><lightning:clickToDial value="14155555551"/></p>
+    <p><lightning:clickToDial value="14155555552" recordId="5003000000D9duF"/></p>
+    <p><lightning:clickToDial value="14155555553" recordId="5003000000D8cuI" params="accountSid=xxx, sourceId=xxx, apiVersion=123"/></p>
+
+
+    <lightning:dualListbox name="languages"  
+                           label= "Select Languages" 
+                           sourceLabel="Available" 
+                           selectedLabel="Selected" 
+                           fieldLevelHelp="This is a dual listbox" 
+                           options="{!v.langoptions}" 
+                           onchange="{! c.handlelangChange }"/>
+
+    <lightning:inputRichText value="&lt;b&gt;HELLO&lt;/b&gt;">
+        <lightning:insertImageButton/>
+    </lightning:inputRichText>
+
+    <div class="c-container">
+        <lightning:layout >
+            <lightning:layoutItem padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title="Field 1">Field 1</p>
+                    <p>Name</p>
+                </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title="Field2 (3)">Field 2 (3)
+                        <lightning:buttonIcon iconName="utility:down" variant="border-filled" size="small" alternativeText="More Actions" />
+                    </p>
+                    <p>Eligibltiy</p>
+                </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title="Field 3">Field 3</p>
+                    <a href="#">Website</a>
+                </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title="Field 4">Field 4</p>
+                    <p>
+                        <span title="">Address</span>
+                    </p>
+                </div>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+
+    <lightning:listView aura:id="listViewAccounts"
+    objectApiName="Account"
+    listName="AllAccounts"
+    rows="5"
+    showSearchBar="true"
+    showActionBar="false"
+    enableInlineEdit="true"
+    showRowLevelActions="false"
+    />
+
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+    <lightning:button name="notice" label="Show Notice" onclick="{!c.handleShowNotice}"/>
+    <lightning:quipCard parentRecordId="XXXXXXXXXXXXXXX"/>
+</aura:component>

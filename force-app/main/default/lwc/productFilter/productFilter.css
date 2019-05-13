@@ -1,6 +1,11 @@
 section {
     margin-top: 16px;
 }
+.backgroundInverse {
+    position: relative;
+    background-color: #16325c;
+    height: 80px;
+}
 
 section > h1 {
     font-weight: bold;

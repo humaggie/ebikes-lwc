@@ -1,4 +1,4 @@
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
 import { CurrentPageReference } from 'lightning/navigation';
 import { getPicklistValues } from 'lightning/uiObjectInfoApi';
 import CATEGORY_FIELD from '@salesforce/schema/Product__c.Category__c';
@@ -23,6 +23,8 @@ export default class ProductFilter extends LightningElement {
         searchKey: '',
         maxPrice: 10000
     };
+
+    @track _selected = [];
 
     @wire(CurrentPageReference) pageRef;
 
@@ -97,5 +99,23 @@ export default class ProductFilter extends LightningElement {
         this.delayTimeout = setTimeout(() => {
             fireEvent(this.pageRef, 'filterChange', this.filters);
         }, DELAY);
+    }
+    get options() {
+        return [
+            { label: 'English', value: 'en' },
+            { label: 'German', value: 'de' },
+            { label: 'Spanish', value: 'es' },
+            { label: 'French', value: 'fr' },
+            { label: 'Italian', value: 'it' },
+            { label: 'Japanese', value: 'ja' },
+        ];
+    }
+
+    get selected() {
+        return this._selected.length ? this._selected : 'none';
+    }
+
+    handleChange(e) {
+        this._selected = e.detail.value;
     }
 }

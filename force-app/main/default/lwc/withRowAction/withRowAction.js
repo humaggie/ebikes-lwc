@@ -1,5 +1,5 @@
 import { LightningElement, track } from 'lwc';
-import fetchDataHelper from './fetchDataHelper';
+//import fetchDataHelper from './fetchDataHelper';
 
 const actions = [
     { label: 'Show details', name: 'show_details' },
@@ -19,13 +19,13 @@ const columns = [
 ];
 
 export default class DatatableWithRowActions extends LightningElement {
-    @track data = [];
+    @track data = ["maggie", "www.google.com", "3109134479", 300, 20019340343];
     @track columns = columns;
     @track record = {};
     @track tableLoadingState = true;
 
     async connectedCallback() {
-        this.data = await fetchDataHelper({ amountOfRecords: 100 });
+        //this.data = await fetchDataHelper({ amountOfRecords: 100 });
         this.tableLoadingState = false;
     }
 
